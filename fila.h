@@ -1,33 +1,39 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
-typedef struct no{
-    int conteudo;
-    struct no *prox;
-}No;
+char elem[100];
 
-typedef struct fila{
-    No *prim;
-    No *ult;
+typedef struct NoF{
+    char conteudo[100];
+    struct NoF *prox;
+}NoF;
+
+typedef struct Fila{
+    NoF *prim;
+    NoF *ult;
 }Fila;
 
 void criarFila(Fila *f){
     f->prim = NULL;
     f->ult = NULL;
 }
-int estaVazia(Fila *f){
+
+int estaVaziaFila(Fila *f){
     if(f->prim == NULL)
         return 1;
     else
         return 0;
 }
-void inserirFila(Fila *f, int conteudo){
-    No *novo = malloc(sizeof(No));
 
-    novo->conteudo = conteudo;
+void inserirFila(Fila *f, char *conteudo){
+    NoF *novo = malloc(sizeof(NoF));
+
+    strcpy (novo->conteudo, conteudo);
+    //novo->conteudo = conteudo;
     novo->prox = NULL;
 
-    if(estaVazia(f)){
+    if(estaVaziaFila(f)){
         f->prim = novo;
         f->ult = novo;
     }else{
@@ -35,36 +41,41 @@ void inserirFila(Fila *f, int conteudo){
         f->ult = novo;
     }
 }
-void exibirFila(Fila *f){
-    No *aux;
 
-    if(estaVazia(f)){
-        printf("\nFILA VAZIA!\n");
+void exibirFila(Fila *f){
+    NoF *aux;
+
+    if(estaVaziaFila(f)){
+        printf("FILA VAZIA!\n");
     }else{
         aux = f->prim;
         while (aux != f->ult)
         {
-            printf("%d ", aux->conteudo);
+            printf("%s ", aux->conteudo);
             aux = aux->prox;
         }
-        printf("%d ", aux->conteudo);
+        printf("%s ", aux->conteudo);
         printf("\n\n");
     }
 }
-void retirarFila(Fila *f){
-    if(estaVazia(f)){
-        printf("\nESTA VAZIA\n");
+
+char* retirarFila(Fila *f){
+
+    if(estaVaziaFila(f)){
+        return NULL;
     }else{
-        No *aux;
+        NoF *aux;
         aux = f->prim;
         if((aux == f->prim) && (aux == f->ult)){
             f->prim = NULL;
             f->ult = NULL;
+            strcpy (elem, aux->conteudo);
             free(aux);
         }else{
             f->prim = f->prim->prox;
+            strcpy (elem, aux->conteudo);
             free(aux);
         }
-        printf("\nELEMENTO RETIRADO COM SUCESSO!\n");
     }
+    return elem;
 }

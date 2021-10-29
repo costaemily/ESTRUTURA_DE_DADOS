@@ -1,60 +1,68 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
-typedef struct no{
-    int conteudo;
-    struct no *prox;
-}No;
+char elem[100];
 
-typedef struct pilha{
-    No *topo;
+typedef struct NoP{
+    char conteudo[100];
+    struct NoP *prox;
+}NoP;
+
+typedef struct Pilha{
+    NoP *topo;
 }Pilha;
 
 void criarPilha(Pilha *p){
     p->topo = NULL;
 }
-int estaVazia(Pilha *p){
+
+int estaVaziaPilha(Pilha *p){
     if(p->topo == NULL)
         return 1;
     else
         return 0;
 }
-void push(Pilha *p, int conteudo){
-    No *novo;
 
-    novo = malloc(sizeof(No));
+void push(Pilha *p, char *conteudo){
+    NoP *novo = malloc(sizeof(NoP));
 
-    novo->conteudo = conteudo;
+    strcpy (novo->conteudo, conteudo);
+    //novo->conteudo = conteudo;
     novo->prox = NULL;
 
-    if(estaVazia(p)){
+    if(estaVaziaPilha(p)){
         p->topo = novo;
     }else{
         novo->prox = p->topo;
         p->topo = novo;
     }
 }
-void pop(Pilha *p){
-    if(estaVazia(p)){
-        printf("\nPILHA VAZIA!\n");
+
+char* pop(Pilha *p){
+
+    if(estaVaziaPilha(p)){
+        return NULL;
     }else{
-        No *aux;
+        NoP *aux;
         aux = p->topo;
+        strcpy (elem, aux->conteudo);
         p->topo = p->topo->prox;
         free(aux);
-        printf("\nELEMENTO RETIRADO COM SUCESSO!\n");
     }
+    return elem;
 }
-void exibirPilha(Pilha *p){
-    No *aux;
 
-    if (estaVazia(p)){
-        printf("\nPILHA VAZIA!\n");
+void exibirPilha(Pilha *p){
+    NoP *aux;
+
+    if (estaVaziaPilha(p)){
+        printf("PILHA VAZIA!\n");
     }else{
         aux = p->topo;
         while (aux)
         {
-            printf("%d\n", aux->conteudo);
+            printf("%s ", aux->conteudo);
             aux = aux->prox;
         }
         printf("\n\n");
